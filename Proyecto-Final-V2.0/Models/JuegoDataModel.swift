@@ -13,6 +13,11 @@ struct JuegoDataModel: Decodable {
 }
 
 struct  Juego: Decodable {
-  let id_juego, id_cancha, jugadores_min, jugadores_max: Int
+  let id_juego, id_cancha, jugadores_min, jugadores_max, jugadores_registrados: Int
   let timestamp: String
+}
+
+struct UserJuego: Decodable {
+    let id_juego: Int
+    let lugar, direccion, timestamp, latitud, longitud: String
 }

@@ -22,14 +22,16 @@ struct RegistroUser: View {
   @State private var style = 0
 
   @State private var keyboardOffset: CGFloat = 0
+  @State var showSuccessAlert = false
+  @State private var isActive = false
 
   var body: some View {
       VStack {
         Form {
           Section(header: Text("Información básica")) {
-            TextField("Nombre", text: $nombre)
-            TextField("Apellidos",text: $apellidos)
-            TextField("Correo electrónico", text: $correo)
+              TextField("Nombre", text: $nombre).disableAutocorrection(true)
+            TextField("Apellidos",text: $apellidos).disableAutocorrection(true)
+              TextField("Correo electrónico", text: $correo).disableAutocorrection(true).autocapitalization(.none)
 
             Stepper(value: $edad, in: 18...100, label: {
               Text("Current age: \(self.edad)")
@@ -37,27 +39,27 @@ struct RegistroUser: View {
 
             Menu {
               Button {
-                  posicion = "Portero"
+                  self.posicion = "Portero"
               } label: {
                   Text("Portero")
               }
               Button {
-                  posicion = "Defensa"
+                  self.posicion = "Defensa"
               } label: {
                   Text("Defensa")
               }
               Button {
-                  posicion = "Medio"
+                  self.posicion = "Medio"
               } label: {
                   Text("Medio")
               }
               Button {
-                  posicion = "Delantero"
+                  self.posicion = "Delantero"
               } label: {
                   Text("Delantero")
               }
             }label: {
-                 Text("\(posicion)")
+                Text("\(self.posicion)")
                  Image(systemName: "heart.fill")
             }
           }
@@ -67,49 +69,53 @@ struct RegistroUser: View {
             SecureField("Verificar contrasela",text: $confirm_password)
           }
 
-          if (self.isUserInformationValid()) && (self.isPasswordValid()) {
-            Button(action: {
-              var params : [String:Any]  = ["nombres":  self.nombre , "apellidos": self.apellidos, "email": self.correo, "posicion_favorita": self.posicion, "password": self.password]
-                print("los parametros son \(params)")
-              myUserViewModel.registrarUsuario(parameters: params)
-              myUserViewModel.getUsuarios()
-
-
-                    },
-                   label:{
-                Text("Guardar")
-            })
-          }
-
-      }.navigationBarTitle(Text("Crea tu perfil"))
-
-      .offset(y: -self.keyboardOffset)
-      .onAppear {
-        NotificationCenter.default.addObserver(
-          forName: UIResponder.keyboardDidShowNotification,
-          object: nil,
-          queue: .main) { (notification) in
-            NotificationCenter.default.addObserver(
-              forName: UIResponder.keyboardDidShowNotification,
-              object: nil,
-              queue: .main) { (notification) in
-                guard let userInfo = notification.userInfo,
-                let keyboardRect = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-
-                self.keyboardOffset = keyboardRect.height
-              }
-
+      }
+        .offset(y: -self.keyboardOffset)
+        .onAppear {
+          NotificationCenter.default.addObserver(
+            forName: UIResponder.keyboardDidShowNotification,
+            object: nil,
+            queue: .main) { (notification) in
               NotificationCenter.default.addObserver(
-                forName: UIResponder.keyboardDidHideNotification,
+                forName: UIResponder.keyboardDidShowNotification,
                 object: nil,
                 queue: .main) { (notification) in
-                  self.keyboardOffset = 0
-                }
-          }
-        }
-      }.background(Color(UIColor.systemGray6))
-  }
+                  guard let userInfo = notification.userInfo,
+                  let keyboardRect = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
 
+                  self.keyboardOffset = keyboardRect.height
+                }
+
+                NotificationCenter.default.addObserver(
+                  forName: UIResponder.keyboardDidHideNotification,
+                  object: nil,
+                  queue: .main) { (notification) in
+                    self.keyboardOffset = 0
+                  }
+            }
+          }
+          
+          if (self.isUserInformationValid()) && (self.isPasswordValid()) {
+              NavigationLink(destination: MenuPrincipal(), isActive: $isActive){
+                Button(action: {
+                    let params : [String:Any]  = ["nombres":  self.nombre , "apellidos": self.apellidos, "email": self.correo, "posicion_favorita": self.posicion, "password": self.password]
+                    print("los parametros son \(params)")
+                    myUserViewModel.registrarUsuario(parameters: params)
+                    showSuccessAlert = true
+                }){
+                    Text("Guardar")
+                }
+                .alert("Registro Exitoso!", isPresented: $showSuccessAlert){
+                    Button("OK", role:.cancel){
+                        self.isActive = true
+                    }
+                }
+              }
+          }
+      }
+      .navigationBarTitle(Text("Crea tu perfil"))
+      .background(Color(UIColor.systemGray6))
+  }
 
   private func isUserInformationValid() -> Bool {
     if nombre.isEmpty {
