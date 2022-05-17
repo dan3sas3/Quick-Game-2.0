@@ -8,36 +8,40 @@
 import SwiftUI
 
 struct ProxJuegos: View {
+    @StateObject private var loginVM = LoginViewModel()
+    @StateObject private var userGamesListVM = UserGameListViewModel()
     var body: some View {
-      List{
-        NavigationLink(destination: ProxJuegosDetalle()) {
-          VStack{
-            Text("Estadio Azteca")
-            AsyncImage(url:URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Estadio_Azteca_cancha_vista_norte.jpg/1200px-Estadio_Azteca_cancha_vista_norte.jpg")){image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 200, height: 200)
-            } placeholder: {
-                ProgressView()
+        switch userGamesListVM.state {
+        case .idle:
+            Color.clear.onAppear(perform:userGamesListVM.getUserGames)
+        case .loading:
+            ProgressView()
+        case .failed:
+            Text("Error cargando los juegos del usuario, intente mas tarde")
+        case .loaded:
+            NavigationView{
+                List{
+                    ForEach(userGamesListVM.juegos, id:\.id){ juego in
+                        NavigationLink(destination: ProxJuegosDetalle(), label: {
+                            VStack{
+                                Text("Juego en: \(juego.cancha)")
+                                AsyncImage(url: URL(string:juego.image)){image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .scaledToFit()
+                                        .frame(width: 200, height: 200, alignment: .center)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                            }
+                        })
+                    }
+                }
             }
-          }
+            .listStyle(InsetListStyle())
+            .navigationTitle("Proximos Juegos")
         }
-
-        NavigationLink(destination: ProxJuegosDetalle()) {
-          VStack{
-            Text("Estadio Azteca")
-            AsyncImage(url:URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Estadio_Azteca_cancha_vista_norte.jpg/1200px-Estadio_Azteca_cancha_vista_norte.jpg")){image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 200, height: 200)
-            } placeholder: {
-                ProgressView()
-            }
-          }
-        }
-      }.navigationTitle("Próximos juegos")
     }
 }
 

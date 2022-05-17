@@ -10,7 +10,9 @@ import SwiftUI
 import SwiftUI
 
 struct Login: View {
+    @StateObject private var loginVM = LoginViewModel()
     //MARK:- PROPERTIES
+    //recordar que username es mas bien email
     @State private var username = ""
     @State private var password = ""
 
@@ -40,7 +42,7 @@ struct Login: View {
                     VStack(alignment: .center, spacing: 30){
                         VStack(alignment: .center) {
                             CustomTextfield(placeholder:
-                                                Text("Username"),
+                                                Text("Email"),
                                             fontName: "OpenSans-Regular",
                                             fontSize: 18,
                                             fontColor: Color.white.opacity(0.3),
@@ -70,22 +72,36 @@ struct Login: View {
                 .padding(.horizontal,35)
 
                 //Button
-                Button(action: {}){
-                  NavigationLink(destination: MenuPrincipal()){
-                    Text("login".uppercased())
-                        .modifier(CustomTextM(fontName: "OpenSans-Bold", fontSize: 14, fontColor: Color.black))
-                        .modifier(ButtonStyle(buttonHeight: 60, buttonColor: Color.white, buttonRadius: 10))
-                  }
-                }
-                .padding(.horizontal,35)
-                .padding(.top,30)
+                //NavigationLink(destination: MenuPrincipal(), isActive: $isActive){
+                    Button(action: {
+                        loginVM.email = self.username
+                        loginVM.password = self.password
+                        loginVM.login()
+                    }){
+                      //NavigationLink(destination: MenuPrincipal()){
+                        Text("login".uppercased())
+                            .modifier(CustomTextM(fontName: "OpenSans-Bold", fontSize: 14, fontColor: Color.black))
+                            .modifier(ButtonStyle(buttonHeight: 60, buttonColor: Color.white, buttonRadius: 10))
+                      //}
+                    }
+                    .overlay(
+                        NavigationLink(destination: MenuPrincipal(), isActive: $loginVM.isAuthenticated){
+                            EmptyView()
+                        }
+                    )
+                    .alert(isPresented: $loginVM.showLoginError){
+                        Alert(title: Text("Datos Incorrectos"))
+                    }
+                    .padding(.horizontal,35)
+                    .padding(.top,30)
+                //}
                 Spacer()
                 //SighnUp
                 VStack(spacing: 15){
                     Text("Need an account?")
                         .modifier(CustomTextM(fontName: "OpenSans-Bold", fontSize: 14, fontColor: Color.white.opacity(0.5)))
                     Button(action: {}){
-                      NavigationLink(destination: RegistroUser()){
+                        NavigationLink(destination: RegistroUser().environmentObject(UserViewModel())){
                         Text("sign up".uppercased())
                             .modifier(CustomTextM(fontName: "OpenSans-Bold", fontSize: 14, fontColor: Color.white))
                             .modifier(ButtonStyle(buttonHeight: 60, buttonColor: Color.white.opacity(0.15), buttonRadius: 10))
@@ -94,9 +110,10 @@ struct Login: View {
                 }
                 .padding(.horizontal,90)
                 .padding(.bottom,30)
-            }
-          }
-      }
+                    
+            }//VStack
+          }//ZStack
+      }//NavigationView
     }
 }
 

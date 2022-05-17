@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE03BF26283169830013685C /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE03BF25283169820013685C /* LoginService.swift */; };
+		BE03BF2828316CF60013685C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE03BF2728316CF60013685C /* LoginViewModel.swift */; };
+		BE45102F2830411A0025D51A /* CanchasModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE45102E2830411A0025D51A /* CanchasModel.swift */; };
+		BE53D979283347430055AD95 /* UserGameListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE53D978283347430055AD95 /* UserGameListViewModel.swift */; };
 		FB769887282DDF1E00FED14F /* Proyecto_Final_V2_0App.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB769886282DDF1E00FED14F /* Proyecto_Final_V2_0App.swift */; };
 		FB769889282DDF1E00FED14F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB769888282DDF1E00FED14F /* ContentView.swift */; };
 		FB76988B282DDF1F00FED14F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB76988A282DDF1F00FED14F /* Assets.xcassets */; };
@@ -29,6 +33,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BE03BF25283169820013685C /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
+		BE03BF2728316CF60013685C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		BE45102E2830411A0025D51A /* CanchasModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanchasModel.swift; sourceTree = "<group>"; };
+		BE53D978283347430055AD95 /* UserGameListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGameListViewModel.swift; sourceTree = "<group>"; };
 		FB769883282DDF1E00FED14F /* Proyecto-Final-V2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Proyecto-Final-V2.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB769886282DDF1E00FED14F /* Proyecto_Final_V2_0App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Proyecto_Final_V2_0App.swift; sourceTree = "<group>"; };
 		FB769888282DDF1E00FED14F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -123,6 +131,7 @@
 			children = (
 				FB7698AC282DE16300FED14F /* JuegoDataModel.swift */,
 				FB7698AE282DE18700FED14F /* UserDataModel.swift */,
+				BE45102E2830411A0025D51A /* CanchasModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -132,6 +141,9 @@
 			children = (
 				FB7698B1282DE1BF00FED14F /* GameViewModel.swift */,
 				FB7698B3282DE1E000FED14F /* UserViewModel.swift */,
+				BE03BF25283169820013685C /* LoginService.swift */,
+				BE03BF2728316CF60013685C /* LoginViewModel.swift */,
+				BE53D978283347430055AD95 /* UserGameListViewModel.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -206,6 +218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE03BF26283169830013685C /* LoginService.swift in Sources */,
 				FB769895282DDF8600FED14F /* Login.swift in Sources */,
 				FB76989F282DE06400FED14F /* ProxJuegos.swift in Sources */,
 				FB7698A1282DE08400FED14F /* PlaceAnnotationView.swift in Sources */,
@@ -213,12 +226,15 @@
 				FB7698B2282DE1BF00FED14F /* GameViewModel.swift in Sources */,
 				FB7698A8282DE12000FED14F /* CustomSecureField.swift in Sources */,
 				FB7698A5282DE0E400FED14F /* CrearJuego.swift in Sources */,
+				BE03BF2828316CF60013685C /* LoginViewModel.swift in Sources */,
 				FB7698AD282DE16300FED14F /* JuegoDataModel.swift in Sources */,
 				FB769897282DDFA900FED14F /* BuscarJuego.swift in Sources */,
 				FB7698A3282DE0B200FED14F /* MenuPrincipal.swift in Sources */,
 				FB769899282DDFDD00FED14F /* RegistroUser.swift in Sources */,
+				BE53D979283347430055AD95 /* UserGameListViewModel.swift in Sources */,
 				FB76989B282DE01500FED14F /* UserDetalle.swift in Sources */,
 				FB769887282DDF1E00FED14F /* Proyecto_Final_V2_0App.swift in Sources */,
+				BE45102F2830411A0025D51A /* CanchasModel.swift in Sources */,
 				FB7698AF282DE18700FED14F /* UserDataModel.swift in Sources */,
 				FB7698B4282DE1E000FED14F /* UserViewModel.swift in Sources */,
 				FB7698AA282DE14000FED14F /* CustomTextfield.swift in Sources */,

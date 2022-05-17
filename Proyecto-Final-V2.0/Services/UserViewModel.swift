@@ -93,7 +93,7 @@ class UserViewModel : ObservableObject
             }//fin del do
             catch let JsonError
             {
-                print("error en json creaFruits", JsonError.localizedDescription)
+                print("error en json", JsonError.localizedDescription)
              }
 
 

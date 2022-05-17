@@ -10,8 +10,8 @@ import Foundation
 class GameViewModel : ObservableObject
 {
     @Published var juegos = [Juego]()
-    @Published var regreso = JuegoDataModel(error: true, message: "", data: [Juego(id_juego: 0, id_cancha: 0, jugadores_min: 0, jugadores_max: 0, timestamp: "")])
-    let prefixUrl = "https://sucursales-sastre.glitch.me/"
+    @Published var regreso = JuegoDataModel(error: true, message: "", data: [Juego(id_juego: 0, id_cancha: 0, jugadores_min: 0, jugadores_max: 0, jugadores_registrados: 0, timestamp: "")])
+    let prefixUrl = "https://sucursales-sastre.glitch.me"
     func getJuegos()
     {
         guard let url = URL(string: "\(prefixUrl)/mostrarjuegos") else
@@ -53,13 +53,15 @@ class GameViewModel : ObservableObject
     }
     func creaJuego(parameters: [String: Any]) // parametrers es un diccionario
     {
-        guard let url = URL(string: "\(prefixUrl)/registrar") else
+        guard let url = URL(string: "\(prefixUrl)/crearjuego") else
         {
             print("error url")
             return
 
         }
+        print(parameters)
         let data = try! JSONSerialization.data(withJSONObject: parameters)
+        print(data)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = data
@@ -93,7 +95,7 @@ class GameViewModel : ObservableObject
             }//fin del do
             catch let JsonError
             {
-                print("error en json creaFruits", JsonError.localizedDescription)
+                print("error en json", JsonError.localizedDescription)
              }
 
 
