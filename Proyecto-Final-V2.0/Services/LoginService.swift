@@ -50,6 +50,26 @@ class LoginService{
             
         }.resume()
     }
+    func getOtherGames(token: String, completion: @escaping (Result<[UserJuego], NetworkError>) -> Void){
+        guard let url = URL(string:"https://sucursales-sastre.glitch.me/restojuegos") else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        var request = URLRequest(url:url)
+        request.addValue(token, forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request){ (data,response,error) in
+            guard let data = data, error == nil else {
+                completion(.failure(.noData))
+                return
+            }
+            guard let juegos = try? JSONDecoder().decode([UserJuego].self, from:data) else {
+                completion(.failure(.decodingError))
+                return
+            }
+            completion(.success(juegos))
+            
+        }.resume()
+    }
     func login(email: String, password: String, completion: @escaping (Result<String, AuthenticationError>) -> Void){
         guard let url = URL(string: "https://sucursales-sastre.glitch.me/login") else {
             completion(.failure(.custom(errorMessage: "URL is not correct")))

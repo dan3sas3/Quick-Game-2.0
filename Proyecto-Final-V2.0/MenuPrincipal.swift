@@ -13,6 +13,9 @@ import SwiftUI
 struct MenuPrincipal: View {
   @StateObject private var loginVM = LoginViewModel()
   @Environment(\.presentationMode) var presentation;
+    
+  @State var isActive = false;
+    
   var body: some View {
     NavigationView{
       List{
@@ -30,16 +33,18 @@ struct MenuPrincipal: View {
       }
       .navigationTitle("¡Bienvenido!")
       .toolbar {
-          ToolbarItem(placement: .bottomBar){
+          ToolbarItemGroup(placement: .bottomBar){
               Button("Logout", action:{
                   loginVM.signout()
                   presentation.wrappedValue.dismiss()
               })
-//             {
-//                  NavigationLink(destination: Login().navigationBarBackButtonHidden(true)){
-//                      Text("Logout")
-//                  }
-//              }
+              Button(action:{self.isActive = true}){
+                  Text("Mi Perfil")
+              }.overlay(
+                NavigationLink(destination: Perfil(), isActive: $isActive){
+                  EmptyView()
+                }
+              )
           }
       }
     }

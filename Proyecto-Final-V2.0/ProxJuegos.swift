@@ -19,10 +19,18 @@ struct ProxJuegos: View {
         case .failed:
             Text("Error cargando los juegos del usuario, intente mas tarde")
         case .loaded:
-            NavigationView{
                 List{
                     ForEach(userGamesListVM.juegos, id:\.id){ juego in
-                        NavigationLink(destination: ProxJuegosDetalle(), label: {
+                        NavigationLink(destination: ProxJuegosDetalle(
+                            id_juego: juego.id,
+                            cancha: juego.cancha,
+                            direccion: juego.direccion,
+                            image: juego.image,
+                            fecha: juego.fecha,
+                            latitud: juego.latitud,
+                            longitud: juego.longitud,
+                            userRegistered: true
+                        ).environmentObject(GameViewModel()), label: {
                             VStack{
                                 Text("Juego en: \(juego.cancha)")
                                 AsyncImage(url: URL(string:juego.image)){image in
@@ -38,9 +46,8 @@ struct ProxJuegos: View {
                         })
                     }
                 }
-            }
-            .listStyle(InsetListStyle())
-            .navigationTitle("Proximos Juegos")
+                .listStyle(InsetListStyle())
+                .navigationTitle("Proximos Juegos")
         }
     }
 }

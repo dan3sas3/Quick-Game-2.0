@@ -51,6 +51,8 @@ class UserViewModel : ObservableObject
 
         }.resume() // fin dataTask
     }
+        
+    
     func registrarUsuario(parameters: [String: Any]) // parametrers es un diccionario
     {
         guard let url = URL(string: "\(prefixUrl)/registrar") else
