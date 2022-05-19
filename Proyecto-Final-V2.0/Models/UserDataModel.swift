@@ -16,3 +16,7 @@ struct  Usuario: Decodable {
     let id: Int
     let nombres, apellidos, email, posicion_favorita, password: String
 }
+
+struct PerfilUsuarioModel: Codable {
+    let nombre, apellidos, email, posicion_favorita, message: String?
+}

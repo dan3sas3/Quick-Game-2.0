@@ -9,6 +9,7 @@ import SwiftUI
 //prueba
 struct RegistroUser: View {
   @EnvironmentObject var myUserViewModel: UserViewModel
+  @Environment(\.presentationMode) var presentation;
 
   //private let oldPasswordToConfirmAgainst = "12345"
   @State private var nombre = ""
@@ -96,7 +97,7 @@ struct RegistroUser: View {
           }
           
           if (self.isUserInformationValid()) && (self.isPasswordValid()) {
-              NavigationLink(destination: MenuPrincipal(), isActive: $isActive){
+              //NavigationLink(destination: Login(), isActive: $isActive){
                 Button(action: {
                     let params : [String:Any]  = ["nombres":  self.nombre , "apellidos": self.apellidos, "email": self.correo, "posicion_favorita": self.posicion, "password": self.password]
                     print("los parametros son \(params)")
@@ -108,9 +109,10 @@ struct RegistroUser: View {
                 .alert("Registro Exitoso!", isPresented: $showSuccessAlert){
                     Button("OK", role:.cancel){
                         self.isActive = true
+                        presentation.wrappedValue.dismiss()
                     }
                 }
-              }
+              //}
           }
       }
       .navigationBarTitle(Text("Crea tu perfil"))

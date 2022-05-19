@@ -9,30 +9,24 @@
 import SwiftUI
 import MapKit
 
-struct Place: Identifiable {
-  let id = UUID()
-  var name: String
-  var coordinate: CLLocationCoordinate2D
-}
-
 struct ProxJuegosDetalle: View {
-  @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 19.427620, longitude: -99.160866), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.1))
-
-  var lugares = [
-    Place(name: "Prueba", coordinate: CLLocationCoordinate2D(latitude: 19.426779, longitude: -99.167527))
-  ]
-
+  @EnvironmentObject var myGameViewModel: GameViewModel
+  @Environment(\.presentationMode) var presentation;
+    
+  @State var id_juego = -1
+  @State var cancha = ""
+  @State var direccion = ""
+  @State var image = ""
+  @State var fecha = ""
+  @State var latitud = ""
+  @State var longitud = ""
+  @State var userRegistered = false
+  @State var isActive = false
+  @State private var showAlert = false
+  
   var body: some View {
-      VStack  {
-        Text("Detalles del juego")
-          .font(Font.system(size: 16, weight: .bold))
-        Text("Luegar: Estadio Azteca")
-          .padding()
-        Text("Dirección: Avenida Lol")
-          .padding()
-      }.padding()// fin VStack
       VStack{
-        AsyncImage(url:URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Estadio_Azteca_cancha_vista_norte.jpg/1200px-Estadio_Azteca_cancha_vista_norte.jpg")){image in
+        AsyncImage(url:URL(string: image)){image in
           image
             .resizable()
             .scaledToFill()
@@ -41,20 +35,50 @@ struct ProxJuegosDetalle: View {
           ProgressView()
         }
       }
-
-      VStack{
-        Map(coordinateRegion: $region, annotationItems: lugares){ place in
-          MapAnnotation(coordinate: place.coordinate) {
-            NavigationLink {
-
-            } label: {
-              PlaceAnnotationView(title: place.name)
-            }
+      .navigationBarTitle("Mis Juegos", displayMode: .inline)
+      VStack  {
+        Text("Detalles del juego")
+          .font(Font.system(size: 16, weight: .bold))
+        Text("Lugar: \(cancha)")
+          .padding()
+        Text("Dirección: \(direccion)")
+          .padding()
+        Text("Fecha: \(fecha)")
+          .padding()
+      }.padding()// fin VStack
+      Button(action: {
+          self.isActive = true
+      }){
+          Text("Ver en Mapa")
+              .modifier(CustomTextM(fontName: "OpenSans-Bold", fontSize: 14, fontColor: Color.black))
+              .modifier(ButtonStyle(buttonHeight: 60, buttonColor: Color.white, buttonRadius: 10))
+      }
+      .overlay(
+          NavigationLink(destination: LocalizacionJuego(
+            cancha: self.cancha,
+            latitud: self.latitud,
+            longitud: self.longitud
+          ), isActive: $isActive){
+              EmptyView()
           }
-        }.frame(width: 400, height: 300)
+      )
+      if !self.$userRegistered.wrappedValue {
+          Button(action:{
+              myGameViewModel.registrarAJuego(parameters: [ "gameId" : id_juego])
+              self.showAlert = true
+          }){
+              Text("Unirme al juego")
+          }
+          .alert("Registro Exitoso!", isPresented: $showAlert){
+              Button("OK", role: .cancel){
+                  showAlert = false
+                  presentation.wrappedValue.dismiss()
+              }
+          }
       }
     }
 }
+
 
 struct ProxJuegosDetalle_Previews: PreviewProvider {
     static var previews: some View {

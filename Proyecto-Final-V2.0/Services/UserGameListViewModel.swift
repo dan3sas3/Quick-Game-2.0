@@ -16,6 +16,7 @@ class UserGameListViewModel: ObservableObject {
     }
     @Published private(set) var state = State.idle
     @Published var juegos: [UserGameViewModel] = []
+    
     func getUserGames(){
         state = .loading
         let defaults = UserDefaults.standard
@@ -23,6 +24,26 @@ class UserGameListViewModel: ObservableObject {
             return
         }
         LoginService().getUserGames(token: token){ (result) in
+            switch result {
+                case .success(let juegos):
+                DispatchQueue.main.async{
+                    self.juegos = juegos.map(UserGameViewModel.init)
+                    self.state = .loaded
+                }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                self.state = .failed
+            }
+        }
+    }
+    
+    func getOtherGames(){
+        state = .loading
+        let defaults = UserDefaults.standard
+        guard let token = defaults.string(forKey: "jsonwebtoken") else{
+            return
+        }
+        LoginService().getOtherGames(token: token){ (result) in
             switch result {
                 case .success(let juegos):
                 DispatchQueue.main.async{

@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct Login: View {
     @StateObject private var loginVM = LoginViewModel()
     //MARK:- PROPERTIES
@@ -52,7 +50,7 @@ struct Login: View {
                         }
                         VStack(alignment: .center) {
                             CustomSecureField(placeholder:
-                                                Text("Password"),
+                                                Text("Contraseña"),
                                               fontName: "OpenSans-Regular",
                                               fontSize: 18,
                                               fontColor: Color.white.opacity(0.3),
@@ -63,7 +61,7 @@ struct Login: View {
                     }
                     HStack{
                         Button(action: {}){
-                            Text("Request new password.")
+                            Text("Olvidaste tu contraseña?")
                                 .modifier(CustomTextM(fontName: "OpenSans-Regular", fontSize: 14, fontColor: Color.white.opacity(0.65)))
                         }
                         Spacer()
@@ -98,11 +96,11 @@ struct Login: View {
                 Spacer()
                 //SighnUp
                 VStack(spacing: 15){
-                    Text("Need an account?")
+                    Text("No tienes cuenta?")
                         .modifier(CustomTextM(fontName: "OpenSans-Bold", fontSize: 14, fontColor: Color.white.opacity(0.5)))
                     Button(action: {}){
                         NavigationLink(destination: RegistroUser().environmentObject(UserViewModel())){
-                        Text("sign up".uppercased())
+                        Text("Registrarse".uppercased())
                             .modifier(CustomTextM(fontName: "OpenSans-Bold", fontSize: 14, fontColor: Color.white))
                             .modifier(ButtonStyle(buttonHeight: 60, buttonColor: Color.white.opacity(0.15), buttonRadius: 10))
                       }
